@@ -99,9 +99,11 @@ export function LatestPost() {
     console.log(passes);
     if (passes != 0) return pushNotif('Please complete the field')
 
+
     const annotation = {
+      id: latestPost?.id ?? -1,
       recognized: selectedValue,
-      topics: selectedTopics,
+      topics: topics.filter(topic => selectedTopics.includes(topic.id)).map(topic => topic.name),
       decade: selectedDecade,
     };
 
@@ -110,7 +112,6 @@ export function LatestPost() {
     
     // Fetch New
     reset();
-    handleTopicChange();
 
       return 0;
     } catch (e) {
