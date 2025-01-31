@@ -12,7 +12,6 @@ import * as Select from '@radix-ui/react-select';
 export function LatestPost() {
   const [latestPost] = api.post.getLatest.useSuspenseQuery();
   const [selectedValue, setSelectedValue] = useState("n/a");
-
   const [selectedTopics, setSelectedTopics] = useState<number[]>([]);
   const [selectedDecade, setSelectedDecade] = useState<string | null>(null);
 
@@ -42,12 +41,50 @@ export function LatestPost() {
     { id: 4, name: "Life" },
   ];
 
+
+  const reset = () => {
+    setSelectedDecade(null);
+    setSelectedValue('n/a');
+    setSelectedTopics([]);
+  }
+
+  const assertState = () => {
+    
+    // Asserts
+    if (selectedValue === 'n/a') return 1;
+    if (selectedTopics.length != 2) return 2;
+    if (selectedDecade === null) return 3;
+
+    return 0;
+  }
+
+  const pushNotif = (msg: string) => {
+    console.log(msg)
+  }
+
+  const pushAnnotation = (annotation: any) => {
+    console.log(annotation);
+  }
+
   // Submit Handler
   const submitHandle = () => {
 
-    // Asserts
-    if (selectedValue !== 'n/a') return 1;
-    if (selectedTopics.length != 2) return 1;
+    const passes = assertState();
+    console.log(passes);
+    if (passes != 0) return pushNotif('Please complete the field')
+
+    const annotation = {
+      recognized: selectedValue,
+      topics: selectedTopics,
+      decade: selectedDecade,
+    };
+
+    // Push
+    pushAnnotation(annotation);
+    
+    // Fetch New
+    reset();
+    handleTopicChange();
 
     return 0;
   }
@@ -148,15 +185,7 @@ export function LatestPost() {
       </div>
 
       <Button
-        onClick={() => {
-          const annotation = {
-        recognized: selectedValue,
-        topics: selectedTopics,
-        decade: selectedDecade,
-          };
-          console.log(annotation);
-          // You can replace the console.log with an API call to save the annotation
-        }}
+        onClick={submitHandle}
       >
         Submit
       </Button>
