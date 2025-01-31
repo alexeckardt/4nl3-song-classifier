@@ -4,7 +4,7 @@ import pandas as pd
 
 def main(): 
 
-    path = '../datasets'
+    path = './datasets'
 
     fs = range(8)
     files = [f'{path}/dataset_{x+1}.json' for x in fs]
@@ -26,8 +26,9 @@ def main():
         df['id'] = list(range(len(dbObj)))
 
         # Drop the Name
-        df.drop_columns(['title']);
 
+        df = df.drop(columns=['title'])
+        print(df.head())
         conn = sqlite3.connect(fileName.replace('.json', '.db'))  # This will create songs.db if it doesn't exist
 
         # Save DataFrame to SQLite

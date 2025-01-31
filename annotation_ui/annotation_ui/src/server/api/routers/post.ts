@@ -34,7 +34,7 @@ export const postRouter = createTRPCRouter({
   getLatest: publicProcedure.query(async ({ ctx }) => {
     const post = await ctx.db.song.findFirst({
       orderBy: { id: "asc" },
-      where: { recognized: { lte: 0 } }
+      where: { recognized: { lt: 0 } }
     });
 
     return post ?? null;
