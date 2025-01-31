@@ -21,13 +21,13 @@ export function LatestPost() {
   const handleTopicChange = (id: number) => {
     setSelectedTopics((prev) => {
 
-        //Exit, don't full stack over 2
-        if (prev.length == 2 && !prev.includes(id)) return prev;
+      //Exit, don't full stack over 2
+      if (prev.length == 2 && !prev.includes(id)) return prev;
 
-        // Normal
-        return prev.includes(id) ? prev.filter((topicId) => topicId !== id) : [...prev, id]
-      }
-  
+      // Normal
+      return prev.includes(id) ? prev.filter((topicId) => topicId !== id) : [...prev, id]
+    }
+
     );
   };
 
@@ -62,7 +62,7 @@ export function LatestPost() {
   const reset = () => {
     setSelectedDecade(null);
     setSelectedValue('n/a');
-    setSelectedTopics((prev) => {return []});
+    setSelectedTopics((prev) => { return [] });
 
     setErrorMsg('')
   }
@@ -151,30 +151,42 @@ export function LatestPost() {
           {/* Divide Section */}
           <div className='height-10 pb-10' />
 
-          <h1>Select the Top 2 Topics you assosiate with this song: ({selectedTopics.length}/2)</h1>
+          <h1 className='pb-4'>Select the Top 2 Topics you assosiate with this song: ({selectedTopics.length}/2)</h1>
+
           <ScrollArea className="h-[200px] w-full overflow-auto">
-            <Table>
-              {/* <TableHeader>
-              <TableRow>
-                <TableHead>Topic</TableHead>
-              </TableRow>
-            </TableHeader> */}
+            <Table className='w-[500px]'>
               <TableBody>
-                {topics.map((topic) => (
-                  <TableRow key={topic.id}>
-                    <TableCell 
-                        className='h-6'>
-                      <Checkbox
-                        checked={selectedTopics.includes(topic.id)}
-                        onCheckedChange={() => {handleTopicChange(topic.id)}}
-                      />
-                      {topic.name}
-                    </TableCell>
-                  </TableRow>
-                ))}
+                {topics.map((topic) => {
+
+                  const selected = selectedTopics.includes(topic.id);
+                  const rowClass = 'h-[60px] ' + (selected ? 'font-semibold text-green-500' : 'bg-transparent');
+                  const color = selected ? 'rgb(169, 235, 181)' : 'white';
+
+                  return (
+                    <TableRow key={topic.id}>
+                      <TableCell
+                        className={rowClass}
+                        onClick={() => { handleTopicChange(topic.id) }}
+                        // style={{ color }}
+                        >
+                        {topic.name}
+                      </TableCell>
+                    </TableRow>
+                  )
+                })}
               </TableBody>
             </Table>
           </ScrollArea>
+
+          <h3>
+          Selected Topics: <span className='text-purple-400'>
+            {(selectedTopics.length == 0 ?
+              '<None>'
+              :
+              topics.filter(topic => selectedTopics.includes(topic.id)).map(topic => topic.name).join(' / ')
+            )}
+          </span>
+          </h3>
 
           {/* Divide Section */}
           <div className='height-10 pb-10' />
