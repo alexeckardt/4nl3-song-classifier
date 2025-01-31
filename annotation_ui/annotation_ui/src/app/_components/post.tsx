@@ -6,6 +6,8 @@ import { useState } from 'react'
 import { Button } from "~/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "~/components/ui/table";
 import { Checkbox } from "~/components/ui/checkbox";
+import * as Select from '@radix-ui/react-select';
+
 
 export function LatestPost() {
   const [latestPost] = api.post.getLatest.useSuspenseQuery();
@@ -19,6 +21,17 @@ export function LatestPost() {
     );
   };
 
+  const decades = [
+    "1950s",
+    "1960s",
+    "1970s",
+    "1980s",
+    "1990s",
+    "2000s",
+    "2010s",
+    "2020s",
+  ];
+  
   const topics = [
     { id: 1, name: "Love" },
     { id: 2, name: "Heartbreak" },
@@ -56,46 +69,58 @@ export function LatestPost() {
         <div className='height-10 pb-10' />
 
        <h1>Select the top 2 topics for this song</h1>
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead className="text-white">Topics</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-        {topics.map((topic) => (
-          <TableRow key={topic.id}>
-            <TableCell>
-              <Checkbox
-              checked={selectedTopics.includes(topic.id)}
-              onCheckedChange={() => {
-                if (selectedTopics.includes(topic.id)) {
-                handleTopicChange(topic.id);
-                } else if (selectedTopics.length < 2) {
-                handleTopicChange(topic.id);
-                }
-              }}
-              />
-              {topic.name}
-            </TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-      </Table>
+      <ScrollArea className="h-[200px] w-full overflow-auto">
+        <Table>
+          <TableHeader>
+        <TableRow>
+          <TableHead>Topic</TableHead>
+        </TableRow>
+          </TableHeader>
+          <TableBody>
+          {topics.map((topic) => (
+        <TableRow key={topic.id}>
+          <TableCell>
+            <Checkbox
+            checked={selectedTopics.includes(topic.id)}
+            onCheckedChange={() => {
+          if (selectedTopics.includes(topic.id)) {
+          handleTopicChange(topic.id);
+          } else if (selectedTopics.length < 2) {
+          handleTopicChange(topic.id);
+          }
+            }}
+            />
+            {topic.name}
+          </TableCell>
+        </TableRow>
+          ))}
+        </TableBody>
+        </Table>
+      </ScrollArea>
 
       {/* Divide Section */}
       <div className='height-10 pb-10' />
         
       <h1>What decade do you think this song was written in?</h1>
-      <select>
-        <option value="1960s">60s</option>
-        <option value="1970s">70s</option>
-        <option value="1980s">80s</option>
-        <option value="1990s">90s</option>
-        <option value="2000s">00s</option>
-        <option value="2010s">10s</option>
-        <option value="2020s">20s</option>
-      </select>
+      <div style={{ marginTop: "16px" }}>
+        <Select.Root onValueChange={(value) => console.log(value)}>
+          <Select.Trigger className="inline-flex items-center justify-between rounded-md border px-4 py-2 text-sm">
+            <Select.Value placeholder="Select a decade" />
+            <Select.Icon />
+          </Select.Trigger>
+          <Select.Content position="popper">
+            <Select.ScrollUpButton />
+            <Select.Viewport>
+              {decades.map((decade) => (
+          <Select.Item key={decade} value={decade}>
+            <Select.ItemText>{decade}</Select.ItemText>
+          </Select.Item>
+              ))}
+            </Select.Viewport>
+            <Select.ScrollDownButton />
+          </Select.Content>
+        </Select.Root>
+      </div>
     </div>
 
   </div>
