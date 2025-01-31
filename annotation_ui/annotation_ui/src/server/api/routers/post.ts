@@ -17,7 +17,9 @@ export const postRouter = createTRPCRouter({
       return ctx.db.song.create({
         data: {
           id: 1,
+          name: input.name,
           lyrics: input.name,
+          artist: input.name
         },
       });
     }),
