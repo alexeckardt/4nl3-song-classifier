@@ -12,9 +12,12 @@ import * as Select from '@radix-ui/react-select';
 export function LatestPost() {
   const [latestPost] = api.post.getLatest.useSuspenseQuery();
   const [selectedValue, setSelectedValue] = useState("n/a");
+  const [errorMsg, setErrorMsg] = useState('');
+
   const [selectedTopics, setSelectedTopics] = useState<number[]>([]);
   const [selectedDecade, setSelectedDecade] = useState<string | null>(null);
 
+  // ?? 
   const handleTopicChange = (id: number) => {
     setSelectedTopics((prev) =>
       prev.includes(id) ? prev.filter((topicId) => topicId !== id) : [...prev, id]
@@ -45,11 +48,13 @@ export function LatestPost() {
   const reset = () => {
     setSelectedDecade(null);
     setSelectedValue('n/a');
-    setSelectedTopics([]);
+    setSelectedTopics((prev) => {return []});
+
+    setErrorMsg('')
   }
 
   const assertState = () => {
-    
+
     // Asserts
     if (selectedValue === 'n/a') return 1;
     if (selectedTopics.length != 2) return 2;
@@ -60,6 +65,7 @@ export function LatestPost() {
 
   const pushNotif = (msg: string) => {
     console.log(msg)
+    setErrorMsg(msg);
   }
 
   const pushAnnotation = (annotation: any) => {
@@ -69,24 +75,30 @@ export function LatestPost() {
   // Submit Handler
   const submitHandle = () => {
 
-    const passes = assertState();
-    console.log(passes);
-    if (passes != 0) return pushNotif('Please complete the field')
+    try {
 
-    const annotation = {
-      recognized: selectedValue,
-      topics: selectedTopics,
-      decade: selectedDecade,
-    };
+      const passes = assertState();
+      console.log(passes);
+      if (passes == 1) return pushNotif('Please State if you reccognize the song.')
+      if (passes == 2) return pushNotif('Please Select 2 topics.')
+      if (passes == 3) return pushNotif('Please Choose a decade.')
 
-    // Push
-    pushAnnotation(annotation);
-    
-    // Fetch New
-    reset();
-    handleTopicChange();
+      const annotation = {
+        recognized: selectedValue,
+        topics: selectedTopics,
+        decade: selectedDecade,
+      };
 
-    return 0;
+      // Push & Pull
+      pushAnnotation(annotation);
+
+      // Clean
+      reset();
+
+      return 0;
+    } catch (e) {
+      pushNotif('An Error Occured.')
+    }
   }
 
   return (
@@ -96,69 +108,63 @@ export function LatestPost() {
       <div className='pb-2 text-xl'>Song Classifier - Group 17</div>
       <div className='pb-2 text-xl'>{latestPost && latestPost.id} / {songsToRead} Song</div>
 
-    {/* //  Center Content */}
-    <div style={{display: 'flex', gap: '50px'}}>
-      <div className='float'>
-        <ScrollArea className="h-[calc(100vh-2rem)] w-[40vw] rounded-md border p-4 overflow-auto text-center" style={{ whiteSpace: "pre-wrap" }} type="always">
-          {latestPost?.lyrics}
-        </ScrollArea>
-      </div>
-
-      <div className="text-primary-foreground float" >
-        <h1>Do you recognize this song?</h1>
-        <div>
-          <Button
-            onClick={() => setSelectedValue("yes")}
-            variant={selectedValue === "yes" ? "secondary" : "default"}
-          >
-            Yes
-          </Button>
-          <span style={{ margin: "0 8px" }}></span>
-          <Button
-            onClick={() => setSelectedValue("no")}
-            variant={selectedValue === "no" ? "secondary" : "default"}
-          >
-            No
-          </Button>
+      {/* //  Center Content */}
+      <div style={{ display: 'flex', gap: '50px' }}>
+        <div className='float'>
+          <ScrollArea className="h-[calc(100vh-2rem)] w-[40vw] rounded-md border p-4 overflow-auto text-center" style={{ whiteSpace: "pre-wrap" }} type="always">
+            {latestPost?.lyrics}
+          </ScrollArea>
         </div>
 
-        {/* Divide Section */}
-        <div className='height-10 pb-10' />
+        <div className="text-primary-foreground float" >
+          <h1>Do you recognize this song?</h1>
+          <div>
+            <Button
+              onClick={() => setSelectedValue("yes")}
+              variant={selectedValue === "yes" ? "secondary" : "default"}
+            >
+              Yes
+            </Button>
+            <span style={{ margin: "0 8px" }}></span>
+            <Button
+              onClick={() => setSelectedValue("no")}
+              variant={selectedValue === "no" ? "secondary" : "default"}
+            >
+              No
+            </Button>
+          </div>
 
-        <h1>Select the top 2 topics for this song</h1>
-        <ScrollArea className="h-[200px] w-full overflow-auto">
-          <Table>
-            {/* <TableHeader>
+          {/* Divide Section */}
+          <div className='height-10 pb-10' />
+
+          <h1>Select the Top 2 Topics you assosiate with this song: ({selectedTopics.length}/2)</h1>
+          <ScrollArea className="h-[200px] w-full overflow-auto">
+            <Table>
+              {/* <TableHeader>
               <TableRow>
                 <TableHead>Topic</TableHead>
               </TableRow>
             </TableHeader> */}
-            <TableBody>
-              {topics.map((topic) => (
-                <TableRow key={topic.id}>
-                  <TableCell>
-                    <Checkbox
-                      checked={selectedTopics.includes(topic.id)}
-                      onCheckedChange={() => {
-                        if (selectedTopics.includes(topic.id)) {
-                          handleTopicChange(topic.id);
-                        } else if (selectedTopics.length < 2) {
-                          handleTopicChange(topic.id);
-                        }
-                      }}
-                    />
-                    {topic.name}
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </ScrollArea>
+              <TableBody>
+                {topics.map((topic) => (
+                  <TableRow key={topic.id}>
+                    <TableCell>
+                      <Checkbox
+                        checked={selectedTopics.includes(topic.id)}
+                        onCheckedChange={() => {handleTopicChange(topic.id)}}
+                      />
+                      {topic.name}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </ScrollArea>
 
-        {/* Divide Section */}
-        <div className='height-10 pb-10' />
+          {/* Divide Section */}
+          <div className='height-10 pb-10' />
 
-        <h1>What decade do you think this song was written in?</h1>
+          <h1>What decade do you think this song was written in?</h1>
           <Select.Root onValueChange={(value) => setSelectedDecade(value)}>
             <Select.Trigger className="inline-flex items-center justify-between rounded-md border px-4 py-2 text-sm">
               <Select.Value placeholder="Select a decade" />
@@ -181,14 +187,19 @@ export function LatestPost() {
               <Select.ScrollDownButton />
             </Select.Content>
           </Select.Root>
+
+          <div>
+          </div>
+
+          <div className="pt-5 flex-col justify-items-end">
+            {errorMsg && <div className="text-red-300">{errorMsg}</div>}
+            <div className="">
+              <Button onClick={submitHandle} variant={errorMsg ? 'destructive' : 'default'}>Submit</Button>
+            </div>
+          </div>
+
         </div>
       </div>
-
-      <Button
-        onClick={submitHandle}
-      >
-        Submit
-      </Button>
     </div>
   );
 }
