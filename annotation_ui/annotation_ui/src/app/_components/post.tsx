@@ -135,6 +135,8 @@ export function LatestPost() {
     }
   }
 
+  const bgCol = isFetching ? 'bg-zinc-400' : 'bg-zinc-200';
+
   return (
 
     <div>
@@ -145,7 +147,7 @@ export function LatestPost() {
       {/* //  Center Content */}
       <div style={{ display: 'flex', gap: '50px' }}>
         <div className='float'>
-          <ScrollArea className={`h-[calc(70vh-2rem)] w-[40vw] rounded-md p-4 overflow-auto text-center bg-zinc-${isFetching ? '400' : '200'} text-zinc-900`} style={{ whiteSpace: "pre-wrap" }} type="always">
+          <ScrollArea className={`h-[calc(70vh-2rem)] w-[40vw] rounded-md p-4 overflow-auto text-center ${bgCol} text-zinc-900`} style={{ whiteSpace: "pre-wrap" }} type="always">
             {isFetching ? 'Fetching Next...' : latestPost?.lyrics}
           </ScrollArea>
         </div>
