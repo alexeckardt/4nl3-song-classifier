@@ -19,8 +19,15 @@ export function LatestPost() {
 
   // ?? 
   const handleTopicChange = (id: number) => {
-    setSelectedTopics((prev) =>
-      prev.includes(id) ? prev.filter((topicId) => topicId !== id) : [...prev, id]
+    setSelectedTopics((prev) => {
+
+        //Exit, don't full stack over 2
+        if (prev.length == 2 && !prev.includes(id)) return prev;
+
+        // Normal
+        return prev.includes(id) ? prev.filter((topicId) => topicId !== id) : [...prev, id]
+      }
+  
     );
   };
 
@@ -37,6 +44,7 @@ export function LatestPost() {
     "2020s",
   ];
 
+
   const topics = [
     { id: 1, name: "Desire (love/flirting)" },
     { id: 2, name: "Love (devotion)" },
@@ -50,7 +58,6 @@ export function LatestPost() {
     { id: 10, name: "Struggle (mental health/societal issue)" },
     { id: 11, name: "Other" },
   ];
-
 
   const reset = () => {
     setSelectedDecade(null);
@@ -118,7 +125,7 @@ export function LatestPost() {
       {/* //  Center Content */}
       <div style={{ display: 'flex', gap: '50px' }}>
         <div className='float'>
-          <ScrollArea className="h-[calc(100vh-2rem)] w-[40vw] rounded-md border p-4 overflow-auto text-center" style={{ whiteSpace: "pre-wrap" }} type="always">
+          <ScrollArea className="h-[calc(70vh-2rem)] w-[40vw] rounded-md p-4 overflow-auto text-center bg-zinc-200 text-zinc-900" style={{ whiteSpace: "pre-wrap" }} type="always">
             {latestPost?.lyrics}
           </ScrollArea>
         </div>
@@ -155,7 +162,8 @@ export function LatestPost() {
               <TableBody>
                 {topics.map((topic) => (
                   <TableRow key={topic.id}>
-                    <TableCell>
+                    <TableCell 
+                        className='h-6'>
                       <Checkbox
                         checked={selectedTopics.includes(topic.id)}
                         onCheckedChange={() => {handleTopicChange(topic.id)}}
