@@ -11,7 +11,7 @@ import * as Select from '@radix-ui/react-select';
 
 export function LatestPost() {
   const [latestPost] = api.post.getLatest.useSuspenseQuery();
-  const [selectedValue, setSelectedValue] = useState("yes");
+  const [selectedValue, setSelectedValue] = useState("n/a");
 
   const [selectedTopics, setSelectedTopics] = useState<number[]>([]);
 
@@ -40,6 +40,16 @@ export function LatestPost() {
     { id: 3, name: "Party" },
     { id: 4, name: "Life" },
   ];
+
+  // Submit Handler
+  const submitHandle = () => {
+
+    // Asserts
+    if (selectedValue !== 'n/a') return 1;
+    if (selectedTopics.length != 2) return 1;
+
+    return 0;
+  }
 
   return (
 
