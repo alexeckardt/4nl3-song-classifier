@@ -14,6 +14,7 @@ export function LatestPost() {
   const [selectedValue, setSelectedValue] = useState("yes");
 
   const [selectedTopics, setSelectedTopics] = useState<number[]>([]);
+  const [selectedDecade, setSelectedDecade] = useState<string | null>(null);
 
   const handleTopicChange = (id: number) => {
     setSelectedTopics((prev) =>
@@ -111,8 +112,7 @@ export function LatestPost() {
         <div className='height-10 pb-10' />
 
         <h1>What decade do you think this song was written in?</h1>
-        <div style={{ marginTop: "16px" }}>
-          <Select.Root onValueChange={(value) => console.log(value)}>
+          <Select.Root onValueChange={(value) => setSelectedDecade(value)}>
             <Select.Trigger className="inline-flex items-center justify-between rounded-md border px-4 py-2 text-sm">
               <Select.Value placeholder="Select a decade" />
               <Select.Icon />
@@ -137,7 +137,19 @@ export function LatestPost() {
         </div>
       </div>
 
-    </div>
+      <Button
+        onClick={() => {
+          const annotation = {
+        recognized: selectedValue,
+        topics: selectedTopics,
+        decade: selectedDecade,
+          };
+          console.log(annotation);
+          // You can replace the console.log with an API call to save the annotation
+        }}
+      >
+        Submit
+      </Button>
     </div>
   );
 }
