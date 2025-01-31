@@ -11,8 +11,12 @@ datasource db {
 }
 
 model Song {
-  id     Int     @id @default(autoincrement())
-  name   String  @unique
-  artist String  @unique
-  lyrics String  @unique
+  id            Int     @id @default(autoincrement())
+  name          String  @unique
+  artist        String  @unique
+  lyrics        String  @unique
+  recognized    Int
+  topic1        String 
+  topic2        String 
+  decade        Int
 }

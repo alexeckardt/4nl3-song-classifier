@@ -14,6 +14,7 @@ export function LatestPost() {
   const [selectedValue, setSelectedValue] = useState("n/a");
   const [errorMsg, setErrorMsg] = useState('');
 
+  const updateAnnotation = api.post.updateAnnotation.useMutation();
   const [selectedTopics, setSelectedTopics] = useState<number[]>([]);
   const [selectedDecade, setSelectedDecade] = useState<string | null>(null);
 
@@ -83,6 +84,9 @@ export function LatestPost() {
   }
 
   const pushAnnotation = (annotation: any) => {
+    if (annotation.id === -1) return;
+
+    updateAnnotation.mutate(annotation);
     console.log(annotation);
   }
 
@@ -91,23 +95,22 @@ export function LatestPost() {
 
     try {
 
-      const passes = assertState();
-      console.log(passes);
-      if (passes == 1) return pushNotif('Please State if you reccognize the song.')
-      if (passes == 2) return pushNotif('Please Select 2 topics.')
-      if (passes == 3) return pushNotif('Please Choose a decade.')
+    const passes = assertState();
+    console.log(passes);
+    if (passes != 0) return pushNotif('Please complete the field')
 
-      const annotation = {
-        recognized: selectedValue,
-        topics: selectedTopics,
-        decade: selectedDecade,
-      };
+    const annotation = {
+      recognized: selectedValue,
+      topics: selectedTopics,
+      decade: selectedDecade,
+    };
 
-      // Push & Pull
-      pushAnnotation(annotation);
-
-      // Clean
-      reset();
+    // Push
+    pushAnnotation(annotation);
+    
+    // Fetch New
+    reset();
+    handleTopicChange();
 
       return 0;
     } catch (e) {
