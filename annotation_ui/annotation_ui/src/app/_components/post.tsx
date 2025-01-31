@@ -2,7 +2,7 @@
 
 import { api } from "~/trpc/react";
 import { ScrollArea } from "~/components/ui/scroll-area";
-import { useState } from 'react'
+import { useContext, useEffect, useRef, useState } from 'react'
 import { Button } from "~/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "~/components/ui/table";
 import { Checkbox } from "~/components/ui/checkbox";
@@ -10,13 +10,25 @@ import * as Select from '@radix-ui/react-select';
 
 
 export function LatestPost() {
-  const [latestPost] = api.post.getLatest.useSuspenseQuery();
+
+
+  // let [latestPost] = api.post.getLatest.useSuspenseQuery();
   const [selectedValue, setSelectedValue] = useState("n/a");
   const [errorMsg, setErrorMsg] = useState('');
 
   const updateAnnotation = api.post.updateAnnotation.useMutation();
   const [selectedTopics, setSelectedTopics] = useState<number[]>([]);
   const [selectedDecade, setSelectedDecade] = useState<string | null>(null);
+
+  // Get
+  const { data: latestPost, refetch, isFetching } = api.post.getLatest.useQuery(undefined, {
+    enabled: true, // Don't fetch automatically
+  });
+
+  // Fetch
+  const fetchDoc = async () => {
+      await refetch(); // Manually trigger the query
+  }
 
   // ?? 
   const handleTopicChange = (id: number) => {
@@ -86,8 +98,12 @@ export function LatestPost() {
   const pushAnnotation = (annotation: any) => {
     if (annotation.id === -1) return;
 
+    //Push
     updateAnnotation.mutate(annotation);
     console.log(annotation);
+
+    //Fetch
+    fetchDoc();
   }
 
   // Submit Handler
@@ -129,8 +145,8 @@ export function LatestPost() {
       {/* //  Center Content */}
       <div style={{ display: 'flex', gap: '50px' }}>
         <div className='float'>
-          <ScrollArea className="h-[calc(70vh-2rem)] w-[40vw] rounded-md p-4 overflow-auto text-center bg-zinc-200 text-zinc-900" style={{ whiteSpace: "pre-wrap" }} type="always">
-            {latestPost?.lyrics}
+          <ScrollArea className={`h-[calc(70vh-2rem)] w-[40vw] rounded-md p-4 overflow-auto text-center bg-zinc-${isFetching ? '400' : '200'} text-zinc-900`} style={{ whiteSpace: "pre-wrap" }} type="always">
+            {isFetching ? 'Fetching Next...' : latestPost?.lyrics}
           </ScrollArea>
         </div>
 
@@ -225,7 +241,7 @@ export function LatestPost() {
           <div className="pt-5 flex-col justify-items-end">
             {errorMsg && <div className="text-red-300">{errorMsg}</div>}
             <div className="">
-              <Button onClick={submitHandle} variant={errorMsg ? 'destructive' : 'default'}>Submit</Button>
+              <Button disabled={isFetching} onClick={submitHandle} variant={errorMsg ? 'destructive' : 'default'}>Submit</Button>
             </div>
           </div>
 
