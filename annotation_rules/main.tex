@@ -1,0 +1,86 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{booktabs}
+\usepackage{hyperref}
+
+\title{Annotation Guideline}
+
+\author{Group 17:\\ Eckardt, Alex, eckardta\\
+Joshi, Neel, joshin10\\
+Simionescu, Sarah, simiones\\
+Zhou, Eric, zhoue16}
+\date{January 2025}
+
+\begin{document}
+
+\maketitle
+
+\section{CONTENT WARNING}
+The training data constitutes of lyrics of popular music over recent decades which includes discriminatory language that may be offensive and upsetting. The lyrics may also contain sensitive content.
+
+
+
+\section{Introduction}
+This document provides a structured approach for annotators to label song data to train AI models. The goal is to ensure consistency, accuracy, and objectivity in annotations.
+
+When you are working as an annotator, you will use our data labeling tool, which presents you with a song and its lyrics, then asks you to complete three tasks. At the top of the tool, you will see a progress bar showing how many songs you have left to label, and it will fill up as you go.
+
+Below, you will find a mockup that shows how the tool will look.
+
+
+
+
+\section{Criteria, Label Set and Descriptions}
+\subsection{Question 1: Song Recognition}
+This is a simple control question. We will ask if you recognize the track just by reading its lyrics. Please respond:
+
+\begin{itemize}
+    \item \textbf{Yes} if you recognize the song or feel as though you have heard the song before
+    \item \textbf{No} if you have absolute no recollection of ever hearing this song
+\end{itemize}
+
+
+\subsection{Question 2: Category Selection}
+
+First, skim over the song and it's structure. Then, take a closer look at some lyrics to pick out the \textbf{top 2 themes} of the song from the list below. You do not have to read the entire song. We encourage you to read the first chorus, and, if you needed take a closer look at the verses to pick out additional themes.
+
+
+\begin{itemize}
+    \item \textbf{Desire (lust/flirting)} e.g. \href{https://www.youtube.com/watch?v=xYoxBQ03wUQ}{Boyfriend by Justin Beiber}, \href{https://www.youtube.com/watch?v=C-u5WLJ9Yk4}{Baby One More Time by Britney Spears}
+    \item \textbf{Love (devotion)} e.g. \href{https://www.youtube.com/watch?v=2Vv-BfVoq4g}{Perfect by EdSheeran}, \href{https://www.youtube.com/watch?v=OblL026SvD4}{Still Into You by Paramore}
+    \item \textbf{Break-up (heartbreak)} e.g. \href{https://www.youtube.com/watch?v=XXYlFuWEuKI}{Save Your Tears by the Weekend}, \href{https://www.youtube.com/watch?v=3AtDnEC4zak}{We Don't Talk Anymore by Charlie Puth and Selena Gomez}
+    \item \textbf{Jealousy (cheating)} e.g. \href{https://www.youtube.com/watch?v=Z-9gQjUZMm0}{jealousy, jealousy by Olivia Rodrigo}, \href{https://www.youtube.com/watch?v=Bg59q4puhmg}{Girlfriend by Avril Lavigne} 
+     \item \textbf{Dancing (clubbing/happy)} e.g. \href{https://www.youtube.com/watch?v=hHUbLv4ThOo}{Timber by Ke\$ha}, \href{https://www.youtube.com/watch?v=ZbZSe6N_BXs}{Happy by Pharrell Williams}
+    \item \textbf{Friendship} e.g.\href{https://www.youtube.com/watch?v=gJLIiF15wjQ}{Wannabe by Spice Girls}, \href{https://www.youtube.com/watch?v=6k8cpUkKK4c}{Count on Me by Bruno Mars}
+    \item \textbf{Death (loss/grief)} e.g. \href{https://www.youtube.com/watch?v=RgKAFK5djSk}{See You Again by Charlie Puth}, \href{https://www.youtube.com/watch?v=QCtEe-zsCtQ&list=RDQMC5eUFF-35-k&index=9}{How do I say Goodbye by Dean Lewis}
+    \item \textbf{Money (power/flexing)} e.g. \href{https://www.youtube.com/watch?v=ETxmCCsMoD0}{Money, Money, Money by ABBA}, \href{https://www.youtube.com/watch?v=pDddlvCfTiw}{BAND4BAND by Central Cee and Lil Baby}
+    \item \textbf{Motivation (independence/confidence)} e.g. \href{https://www.youtube.com/watch?v=xo1VInw-SKc}{Fight Song by Rachel Platten}, \href{https://www.youtube.com/watch?v=XbGs_qK2PQA}{Rap God, Eminem}
+    \item \textbf{Struggle (mental health/societal issue)} e.g. \href{https://www.youtube.com/watch?v=mWRsgZuwf_8}{Demons by Imagine Dragons}, \href{https://www.youtube.com/watch?v=r_8ydghbGSg}{Skyscraper by Demi Lovato}
+    \item \textbf{Other} e.g. \href{https://www.youtube.com/watch?v=PIh2xe4jnpk}{Rude by MAGIC!}, \href{https://www.youtube.com/watch?v=LHCob76kigA}{7 Years by Lucas Graham}
+\end{itemize}
+
+If you feel the song fits more than two of these categories, pick the two themes that are the most obvious and present. Imagine you had to describe it in one sentence, which 2 topics are more prevalent?
+
+If you feel the song switches drastically between many topics, we highly encourage you to prioritize lyrics in the chorus or themes that repeat more often.
+
+If you feel the song does not fit into any of the categories, you may select "Other" along with one category you feel that is the closest to this "Other" category (even if it is a stretch).
+
+\subsection{Question 3: Decade Classification}
+Provide your best guess of the decade in which the song was written \textbf{entirely based on the language and style of the lyrics}. Even though you may recognize the song, \textbf{do not} choose based on your personal memories (e.g. "How old was I when this song came out?"), rather, justify your choice on the lyrics (e.g. "he ain't scrollin' TikTok" must have been written in 2020s, "holla at me" was a more popular saying in the 90s).
+
+\section{Labelled Example}
+\begin{tabular}{p{0.2\textwidth}|p{0.2\textwidth}|p{0.5\textwidth}}
+\toprule
+\textbf{Task} & \textbf{Example Response} & \textbf{Reasoning} \\
+\midrule
+Do you recognize this song? & Yes & I have heard this song before \\
+\midrule
+Select the top 2 topics for this song & Struggle, Motivation & Lines like ``This is it, the apocalypse'' and ``I'm waking up to ash and dust'' sound quite pessimistic and suggest the songwriter is highlighting a societal and/or personal issue. At the same time, lines such as ``Welcome to the new age, to the new age'' and ``All systems go, the sun hasn't died.'' offers an uplifting, motivating feeling. \\
+\midrule
+What decade do you think this song was written in? & 2010s &  I feel this "post-apocalyptic" theme characterizes the 2010s e.g. Hunger Games, Heathens by Twenty One Pilots, ect. \\
+\bottomrule
+\end{tabular}
+
+\section{Contact Information}
+If you encounter issues or have questions regarding annotation, reach out to Sarah Simionescu at sarah.simionescu@gmail.com. For immediate assistance call or text 289-929-8813.
+\end{document}
