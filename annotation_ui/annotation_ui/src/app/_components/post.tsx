@@ -51,11 +51,15 @@ export function LatestPost() {
             No
             </Button>
         </div>
+
+        {/* Divide Section */}
+        <div className='height-10 pb-10' />
+
        <h1>Select the top 2 topics for this song</h1>
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Topic</TableHead>
+            <TableHead className="text-white">Topics</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -79,6 +83,9 @@ export function LatestPost() {
       </TableBody>
       </Table>
 
+      {/* Divide Section */}
+      <div className='height-10 pb-10' />
+        
       <h1>What decade do you think this song was written in?</h1>
       <select>
         <option value="1960s">60s</option>
