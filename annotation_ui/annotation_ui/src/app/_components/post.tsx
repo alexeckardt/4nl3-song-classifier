@@ -38,10 +38,17 @@ export function LatestPost() {
   ];
 
   const topics = [
-    { id: 1, name: "Love" },
-    { id: 2, name: "Heartbreak" },
-    { id: 3, name: "Party" },
-    { id: 4, name: "Life" },
+    { id: 1, name: "Desire (love/flirting)" },
+    { id: 2, name: "Love (devotion)" },
+    { id: 3, name: "Break-up (heartbreak)" },
+    { id: 4, name: "Jealousy (cheating, promiscuity)" },
+    { id: 5, name: "Dancing (clubbing/happy)" },
+    { id: 6, name: "Friendship" },
+    { id: 7, name: "Death (loss/grief)" },
+    { id: 8, name: "Money (power/flexing)" },
+    { id: 9, name: "Motivation (independance/confidence)" },
+    { id: 10, name: "Struggle (mental health/societal issue)" },
+    { id: 11, name: "Other" },
   ];
 
 
