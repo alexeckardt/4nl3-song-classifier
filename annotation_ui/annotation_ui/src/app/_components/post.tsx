@@ -80,11 +80,11 @@ export function LatestPost() {
         <h1>Select the top 2 topics for this song</h1>
         <ScrollArea className="h-[200px] w-full overflow-auto">
           <Table>
-            <TableHeader>
+            {/* <TableHeader>
               <TableRow>
                 <TableHead>Topic</TableHead>
               </TableRow>
-            </TableHeader>
+            </TableHeader> */}
             <TableBody>
               {topics.map((topic) => (
                 <TableRow key={topic.id}>
