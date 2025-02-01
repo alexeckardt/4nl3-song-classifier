@@ -17,7 +17,7 @@ zhoue16@mcmaster.ca
 Npm install
 
 
-Move your designed dataset file to working directory
+Move your designed dataset file to working directory.
 
 Rename said file to `dataset.db`
 
