@@ -31,6 +31,11 @@ export const postRouter = createTRPCRouter({
       return updatedAnnotation;
     }),
 
+  getCount: publicProcedure.query(async ({ ctx }) => {
+    const count = await ctx.db.song.count();
+    return { count };
+  }),
+
   getLatest: publicProcedure.query(async ({ ctx }) => {
     const post = await ctx.db.song.findFirst({
       orderBy: { id: "asc" },

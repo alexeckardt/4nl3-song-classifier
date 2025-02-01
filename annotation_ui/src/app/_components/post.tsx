@@ -25,6 +25,8 @@ export function LatestPost() {
     enabled: false, // Don't fetch automatically
   });
 
+  const { data: songsToRead } = api.post.getCount.useQuery();
+
   // Fetch
   const fetchDoc = async () => {
       await refetch(); // Manually trigger the query
@@ -43,8 +45,6 @@ export function LatestPost() {
 
     );
   };
-
-  const songsToRead = 10
 
   const decades = [
     "1950s",
@@ -142,7 +142,7 @@ export function LatestPost() {
     <div>
 
       <div className='pb-2 text-xl'>Song Classifier - Group 17</div>
-      <div className='pb-2 text-xl'>{latestPost && latestPost.id} / {songsToRead} Song</div>
+      <div className='pb-2 text-xl'>{latestPost && latestPost.id} / {songsToRead?.count} Songs</div>
 
       {/* //  Center Content */}
       <div style={{ display: 'flex', gap: '50px' }}>
