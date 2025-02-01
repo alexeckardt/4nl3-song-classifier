@@ -2,6 +2,11 @@ import json
 import sqlite3
 import pandas as pd
 
+#
+#   Converts files created by songscraper.py
+#   from the JSON format into the .db format.
+#
+
 def main(): 
 
     path = './datasets'
@@ -14,7 +19,7 @@ def main():
         with open(fileName, 'r') as f:
             dbObj = json.load(f)
 
-        # LOad
+        # Load
         df = pd.DataFrame(dbObj)
 
         # Add columns required by api
