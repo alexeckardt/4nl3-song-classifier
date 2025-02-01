@@ -181,13 +181,13 @@ export function LatestPost() {
 
           <h1 className='pb-4'>Select the Top 2 Topics you assosiate with this song: ({selectedTopics.length}/2)</h1>
 
-            <ScrollArea className="h-[200px] w-full overflow-auto border border-gray-300 rounded-md" type="always">
+            <ScrollArea className="h-[350px] w-full overflow-auto border border-gray-300 rounded-md" type="always">
             <Table className='w-[500px]'>
               <TableBody>
               {topics.map((topic) => {
 
               const selected = selectedTopics.includes(topic.id);
-              const rowClass = 'h-[60px] ' + (selected ? 'font-semibold text-green-500' : 'bg-transparent');
+              const rowClass = 'p-[10px] ' + (selected ? 'font-semibold text-green-500 bg-gray-600' : 'bg-transparent');
               const color = selected ? 'rgb(169, 235, 181)' : 'white';
 
               return (
