@@ -229,6 +229,12 @@ const postRouter = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$se
         });
         return updatedAnnotation;
     }),
+    getCount: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$server$2f$api$2f$trpc$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["publicProcedure"].query(async ({ ctx })=>{
+        const count = await ctx.db.song.count();
+        return {
+            count
+        };
+    }),
     getLatest: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$server$2f$api$2f$trpc$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["publicProcedure"].query(async ({ ctx })=>{
         const post = await ctx.db.song.findFirst({
             orderBy: {

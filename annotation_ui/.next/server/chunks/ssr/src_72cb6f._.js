@@ -288,6 +288,7 @@ function LatestPost() {
     const { data: latestPost, refetch, isFetching } = __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$trpc$2f$react$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["api"].post.getLatest.useQuery(undefined, {
         enabled: false
     });
+    const { data: songsToRead } = __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$trpc$2f$react$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["api"].post.getCount.useQuery();
     // Fetch
     const fetchDoc = async ()=>{
         await refetch(); // Manually trigger the query
@@ -304,7 +305,6 @@ function LatestPost() {
             ];
         });
     };
-    const songsToRead = 10;
     const decades = [
         "1950s",
         "1960s",
@@ -425,8 +425,8 @@ function LatestPost() {
                 children: [
                     latestPost && latestPost.id,
                     " / ",
-                    songsToRead,
-                    " Song"
+                    songsToRead?.count,
+                    " Songs"
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/_components/post.tsx",
