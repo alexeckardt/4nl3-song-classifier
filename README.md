@@ -10,6 +10,24 @@ simiones@mcmaster.ca
 - Eric Zhou -
 zhoue16@mcmaster.ca
 
+## Annotation Instructions
+
+1. Enter into the directory
+
+Npm install
+
+
+Move your designed dataset file to working directory
+
+Rename said file to `dataset.db`
+
+npx prisma generate -- generate the sql models
+
+
+Npm run dev
+
+
+
 
 ## Data Structure
 
@@ -32,5 +50,4 @@ where each instance is a datapoint to be annotated.
 Each of the 8 dataset files can be found in the `./datasets` folder.
 
 ## Rules
-
 Find the Annotation Guideline pdf at `./annotation_rules/guidelines.pdf`
