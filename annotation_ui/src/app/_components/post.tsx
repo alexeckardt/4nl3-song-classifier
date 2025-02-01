@@ -7,6 +7,7 @@ import { Button } from "~/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "~/components/ui/table";
 import { Checkbox } from "~/components/ui/checkbox";
 import * as Select from '@radix-ui/react-select';
+import { useQueryClient } from "@tanstack/react-query";
 
 
 export function LatestPost() {
@@ -20,15 +21,20 @@ export function LatestPost() {
   const [selectedTopics, setSelectedTopics] = useState<number[]>([]);
   const [selectedDecade, setSelectedDecade] = useState<string | null>(null);
 
-  // Get
-  const { data: latestPost, refetch, isFetching } = api.post.getLatest.useQuery(undefined, {
-    enabled: false, // Don't fetch automatically
+  const queryClient = useQueryClient();
+
+  const { data: latestPost, refetch, isFetching } = api.post.getLatest.useQuery({ id: -1 }, {
+    enabled: true, // Don't fetch automatically
   });
 
   const { data: songsToRead } = api.post.getCount.useQuery();
 
   // Fetch
   const fetchDoc = async () => {
+      const oldId = latestPost?.id ?? -1;
+       
+      const queryKey = ["post.getLatest", { id: oldId }]; // Ensure query key matches how it's defined in useQuery
+      queryClient.setQueryData(queryKey, undefined);  // Manually update the query data so it refetches with new parameters
       await refetch(); // Manually trigger the query
   }
 

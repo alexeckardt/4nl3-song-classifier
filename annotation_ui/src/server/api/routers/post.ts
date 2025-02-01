@@ -36,10 +36,22 @@ export const postRouter = createTRPCRouter({
     return { count };
   }),
 
-  getLatest: publicProcedure.query(async ({ ctx }) => {
+  getLatest: publicProcedure
+  .input(z.object({ id: z.number() }))
+  .query(async ({ ctx, input }) => {
+
+    //Ensure Field
+    if (!input.id) {
+      input.id = -1;
+    }
+
     const post = await ctx.db.song.findFirst({
       orderBy: { id: "asc" },
-      where: { recognized: { lt: 0 } }
+      where: { 
+        id: { not: input.id }, 
+        recognized: { lt: 0 }
+       },
+      
     });
 
     return post ?? null;
