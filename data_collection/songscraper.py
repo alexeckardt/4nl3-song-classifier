@@ -100,7 +100,7 @@ for i in range(8):
 
     df = df.drop(columns=['title'])
     print(df.head())
-    conn = sqlite3.connect(f'./datasets/dataset_{i+1}_t.db')  # This will create songs.db if it doesn't exist
+    conn = sqlite3.connect(f'./datasets/dataset_{i+1}.db')  # This will create songs.db if it doesn't exist
 
     # Save DataFrame to SQLite
     df.to_sql("Song", conn, if_exists="replace", index=False)  # 'songs' is the table name
