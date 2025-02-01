@@ -7,7 +7,7 @@ generator client {
 
 datasource db {
     provider = "sqlite"
-    url      = "file:../../../datasets/dataset_1.db"
+    url      = "file:../public/dataset.db"
 }
 
 model Song {
