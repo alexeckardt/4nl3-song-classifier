@@ -1,16 +1,17 @@
 import re
+import sqlite3
+import pandas as pd
 import requests
 import time 
-import json
 
 START_YEAR = 1960
 END_YEAR = 2024
-NUM_SONGS_PER_YEAR = 3
+NUM_SONGS_PER_YEAR = 7
 
 billboard_link = 'https://en.wikipedia.org/wiki/Billboard_Year-End_Hot_100_singles_of_'
 
 songs = [[] for _ in range(8)]
-file_id = 0
+file_id = 0 
 
 # find songs from each year on wikipedia pages
 for year in range(START_YEAR, END_YEAR+1):
@@ -80,8 +81,33 @@ for year in range(START_YEAR, END_YEAR+1):
 
 # write to json
 for i in range(8):
-    with open(f'./datasets/dataset_{i+1}.json', 'w', encoding='utf-8') as f:
-        f.write(json.dumps(songs[i], indent=4))
+
+    #Object
+    dbObj = songs[i]
+
+    # Load
+    df = pd.DataFrame(dbObj)
+
+    # Add columns required by api
+    df['recognized'] = -1 #Add a column
+    df['name'] = df['title']
+    df['topic1'] = ''
+    df['topic2'] = ''
+    df['decade'] = -1
+    df['id'] = list(range(len(dbObj)))
+
+    # Drop the Name
+
+    df = df.drop(columns=['title'])
+    print(df.head())
+    conn = sqlite3.connect(f'./datasets/dataset_{i+1}_t.db')  # This will create songs.db if it doesn't exist
+
+    # Save DataFrame to SQLite
+    df.to_sql("Song", conn, if_exists="replace", index=False)  # 'songs' is the table name
+
+    # Commit and close the connection
+    conn.commit()
+    conn.close()
 
 # print years where not enough songs were found
 for i in manual_years:
