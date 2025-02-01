@@ -31,6 +31,8 @@ export function LatestPost() {
   // Fetch
   const fetchDoc = async () => {
       const oldId = latestPost?.id ?? -1;
+
+      await new Promise(resolve => setTimeout(resolve, 1000));
        
       const queryKey = ["post.getLatest", { id: oldId }]; // Ensure query key matches how it's defined in useQuery
       queryClient.setQueryData(queryKey, undefined);  // Manually update the query data so it refetches with new parameters
@@ -150,7 +152,7 @@ export function LatestPost() {
     <div>
 
       <div className='pb-2 text-xl'>Song Classifier - Group 17</div>
-      <div className='pb-2 text-xl'>{latestPost && latestPost.id} / {songsToRead?.count} Songs</div>
+      <div className='pb-2 text-xl'>{latestPost && latestPost.id + 1} / {songsToRead?.count} Songs</div>
 
       {/* //  Center Content */}
       <div style={{ display: 'flex', gap: '50px' }}>
