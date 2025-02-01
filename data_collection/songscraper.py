@@ -5,7 +5,7 @@ import json
 
 START_YEAR = 1960
 END_YEAR = 2024
-SEARCH_SONGS = [1,2,3]
+NUM_SONGS_PER_YEAR = 3
 
 billboard_link = 'https://en.wikipedia.org/wiki/Billboard_Year-End_Hot_100_singles_of_'
 
@@ -23,60 +23,66 @@ for year in range(START_YEAR, END_YEAR+1):
     rows = re.findall('<tr>((.|\n)*?)</tr>', tbody.group(1))
 
     # get specific songs data from table
-    if year % 2 == 1: song_ranks = [SEARCH_SONGS[0]] + SEARCH_SONGS
-    else: song_ranks = SEARCH_SONGS
-    for i in song_ranks:
+    n_songs_this_year = 0 # track number of songs found for the year
+    manual_years = {} # in case any year didn't have any lyrics
+    for i in range(100):
         # table columns: rank, song title, artist
-        row_data = re.findall('<td.*?>((.|\n)*?)</td>', rows[i][0])
+        row_data = re.findall('<td.*?>((.|\n)*?)</td>', rows[i+1][0])
         if len(row_data) == 3: 
             _, title, artist = row_data
 
             # extract artist
             artist = re.search('<a .*?</a>', artist[0])
             artist = re.sub('<.*?>', '', artist.group())
-        
-        else:
-            _, title = row_data
-            artist = ''
 
-        # extract title
-        title = re.sub('<.*?>|"|\n', '', title[0])
+            # extract title
+            title = re.sub('<.*?>|"|\n', '', title[0])
 
-        # get lyrics from api.lyrics.ovh
-        lyric_link = f'https://api.lyrics.ovh/v1/{artist}/{title}'
-        lyric_html = requests.get(lyric_link)
-        match = re.search('{"lyrics":"(.*)"}', lyric_html.text)
-        if match:
-            lyrics = match.group(1)
-            lyrics = re.sub('\\\\n', '\n', lyrics)
-            lyrics = re.sub('\\\\r', '\r', lyrics)
-        else:
-            lyrics = 'error'
+            # get lyrics from api.lyrics.ovh
+            lyric_link = f'https://api.lyrics.ovh/v1/{artist}/{title}'
+            lyric_html = requests.get(lyric_link)
+            match = re.search('{"lyrics":"(.*)"}', lyric_html.text)
 
-        # create dictionary for song data
-        song = {
-            'title' : title, 
-            'artist' : artist,
-            'year' : year,
-            'lyrics' : lyrics
-            }
+            if match:
+                # found song on api
+                n_songs_this_year += 1
+                lyrics = match.group(1)
+                lyrics = re.sub('\\\\n|\\\\r', '\n', lyrics)
+                # lyrics = re.sub('\\\\r', '\r', lyrics)
 
-        # add song to file
-        songs[file_id].append(song)
-        file_id = (file_id + 1) % 8
-        
+                # create dictionary for song data
+                song = {
+                    'title' : title, 
+                    'artist' : artist,
+                    'year' : year,
+                    'lyrics' : lyrics
+                    }
+                
+                # add song to file
+                songs[file_id].append(song)
+                file_id = (file_id + 1) % 8
+
+                # add duplicate of first song found 
+                if n_songs_this_year == 1:
+                    songs[file_id].append(song)
+                    file_id = (file_id + 1) % 8
+
+                # move on to next year when number of songs are found
+                if n_songs_this_year == NUM_SONGS_PER_YEAR:
+                    break
+
         # prevent time out
         time.sleep(2)
+
+    # not enough songs found
+    if i == 99:
+        manual_years[year] = NUM_SONGS_PER_YEAR - n_songs_this_year
 
 # write to json
 for i in range(8):
     with open(f'./datasets/dataset_{i+1}.json', 'w', encoding='utf-8') as f:
         f.write(json.dumps(songs[i], indent=4))
 
-# songs to get lyrics for manually
-print('\nSongs with no lyrics found: ')
-for i in range(8):
-    for song in songs[i]:
-        if song['lyrics'] == 'error':
-            print(f"- {song['title']} ({song['artist']}, {song['year']})")
-
+# print years where not enough songs were found
+for i in manual_years:
+    print(f'{i} needs {manual_years[i]} more songs')
