@@ -2,10 +2,9 @@
 
 import { api } from "~/trpc/react";
 import { ScrollArea } from "~/components/ui/scroll-area";
-import { useContext, useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 import { Button } from "~/components/ui/button";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "~/components/ui/table";
-import { Checkbox } from "~/components/ui/checkbox";
+import { Table, TableBody, TableCell,  TableRow } from "~/components/ui/table";
 import * as Select from '@radix-ui/react-select';
 import { useQueryClient } from "@tanstack/react-query";
 
@@ -35,6 +34,9 @@ export function LatestPost() {
        
       const queryKey = ["post.getLatest", { id: oldId }]; // Ensure query key matches how it's defined in useQuery
       queryClient.setQueryData(queryKey, undefined);  // Manually update the query data so it refetches with new parameters
+      if(songsToRead?.count == oldId + 1){
+        alert("All songs have been annotated!");
+      };
       await refetch(); // Manually trigger the query
   }
 
@@ -220,22 +222,22 @@ export function LatestPost() {
           <div className='height-10 pb-10' />
 
           <h1>What decade do you think this song was written in?</h1>
-            <Select.Root onValueChange={(value) => setSelectedDecade(value)} value={selectedDecade?? ""}>
+            <Select.Root onValueChange={(value) => setSelectedDecade(value)} value={selectedDecade ?? ""}>
               <Select.Trigger className="inline-flex items-center justify-between rounded-md border px-4 py-2 text-sm">
               <Select.Value placeholder="Select a decade" />
               <Select.Icon />
               </Select.Trigger>
-              <Select.Content position="popper" side="bottom" align="start">
+              <Select.Content position="popper" side="bottom" align="start" sideOffset={4} avoidCollisions={false}>
               <Select.Viewport className="mt-1">
-                {decades.map((decade) => (
-                <Select.Item className='cursor-pointer hover:color-red' key={decade} value={decade}>
-                  <Select.ItemText>
-                  <div className='color-sky-500 hover:color-sky-200'>
-                    {decade}
-                  </div>
-                  </Select.ItemText>
-                </Select.Item>
-                ))}
+              {decades.map((decade) => (
+              <Select.Item className='cursor-pointer hover:color-red' key={decade} value={decade}>
+                <Select.ItemText>
+                <div className='color-sky-500 hover:color-sky-200'>
+                {decade}
+                </div>
+                </Select.ItemText>
+              </Select.Item>
+              ))}
               </Select.Viewport>
               </Select.Content>
             </Select.Root>
