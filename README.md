@@ -72,7 +72,7 @@ and open `localhost:3000` in a browser.
 
 ## Submission of Annotation
 
-Please send us the `dataset.db` file you renamed and placed in the `annotation_ui\public\` subdirectory.
+Please send us the `dataset.db` file you renamed and placed in the `annotation_ui\public\` subdirectory. After annotating, your answers should have saved in the same directory.
 
 ## Data Structure
 
