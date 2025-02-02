@@ -70,6 +70,9 @@ npm run dev
 and open `localhost:3000` in a browser.
 
 
+## Submission of Annotation
+
+Please send us the `dataset.db` file you renamed and placed in the `annotation_ui\public\` subdirectory.
 
 ## Data Structure
 
