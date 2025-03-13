@@ -28,3 +28,6 @@ annotation_ui/public/dataset.db
 
 
 **/__pycache__/
+/datasets/combined_no_lyrics.csv
+/datasets/combined_2.csv
+/datasets/completed/combine_test.py
