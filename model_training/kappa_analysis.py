@@ -1,21 +1,18 @@
 #Run the analasys
 import pandas as pd
 from dataset_loading import load_dataset
+from kappas import cohen_kappa, ordinal_kappa, cohen_set_kappa, single_cohen_set_kappa
 
+#
+#   See ./model_training/README.md
+#
 annotatori = 'christian'
 annotatorj = 'stanley'
 
-
+# Cull the dataframe for only the annotation data.
 def construct_kappa_df(df):
-
-    # Get all that overlap
-    df = df[df.duplicated('song_hash', keep=False)].copy()
-
-    # Remove Un-needed Columns
-    df.drop(columns=['artist','year','lyrics','name','id',], inplace=True)
-
-    # Passback
-    return df
+    df = df[df.duplicated('song_hash', keep=False)].copy() # Get all that overlap
+    return df.drop(columns=['artist','year','lyrics','name','id',])  # Remove Un-needed Columns
 
 # Constuct O(1) lookup for the annotator based on the song hash.
 def construct_agreement_dict(unique_df, annotator, column):
@@ -40,44 +37,86 @@ def construct_agreement_dict(unique_df, annotator, column):
     return out
 
 
-
-def cohen_kappa(unique_pairwise_df, annotatori, annotatorj, column='topic1'):
-
-    # Get
-    iResults = construct_agreement_dict(unique_pairwise_df, annotatori, column)
-    jResults = construct_agreement_dict(unique_pairwise_df, annotatorj, column)
-
-    # Print
-    for key in iResults:
-        iAnswer = iResults[key]
-        jAnswer = jResults[key]
-
-        print(f'{key} {iAnswer} {jAnswer}')
-
-
 if __name__ == '__main__':
 
     # Load dataset
+    print('\n'*4)
     df = load_dataset();
-    # annotators = df['annotator'].unique()
 
     # Get the Annotators with Duplicated Data (SEE ./model_training/README.md)
     dfI = df[df['annotator'] == annotatori]
     dfJ = df[df['annotator'] == annotatorj]
 
     # Repeat Expreiment per Columns
-    columns_interested = ['topic1'] # ['topic1', 'topic2', 'decade', 'decade']
-    for column in columns_interested:
 
-        # Combine
-        print(f'Comparing Agreement between {annotatori} and {annotatorj} on {column}')
+    # Combine
+    print(f'Comparing Agreement between {annotatori} and {annotatorj}\n')
 
-        # Construct Pairwise Dataframes
-        combinedDf = pd.concat([dfI, dfJ], ignore_index=True)
-        uniqueDf = construct_kappa_df(combinedDf)
+    # Construct Pairwise Dataframes
+    combinedDf = pd.concat([dfI, dfJ], ignore_index=True)
+    uniqueDf = construct_kappa_df(combinedDf)
 
-        print(uniqueDf.head())
-        
-        # Compute the Kappa
-        cohen_kappa(uniqueDf, annotatori, annotatorj, column)
-            
+    # Checking Decade
+    column = 'decade'
+
+    # Construct O(1) lookup time for each duplicate song
+    iDecades = construct_agreement_dict(uniqueDf, annotatori, 'decade')
+    jDecades = construct_agreement_dict(uniqueDf, annotatorj, 'decade')
+
+    iTopic1 = construct_agreement_dict(uniqueDf, annotatori, 'topic1')
+    jTopic1 = construct_agreement_dict(uniqueDf, annotatorj, 'topic1')
+
+    iTopic2 = construct_agreement_dict(uniqueDf, annotatori, 'topic2')
+    jTopic2 = construct_agreement_dict(uniqueDf, annotatorj, 'topic2')
+
+    #
+    #  Compute the Binary Kappa of the overlap
+    #   What's the proprotion of the annotation that matched?
+    #
+    kappa = cohen_kappa(iDecades, jDecades)
+    print(f'Binary Cohen Kappa on \'decade\' is {kappa:.4f}')
+
+    #
+    # Compute the Ordianl Kappa of the overlap
+    #   how different were the year annotations?
+    #
+    sep = 1/5 # 'Punishment" for each decade of difference between the two annotators
+    kappa = ordinal_kappa(iDecades, jDecades, sep)
+    print(f'Ordinal Kappa (seperation={sep:.3f}) on \'decade\' is {kappa:.4f}')
+
+    #
+    #   Compute the Binary Kappa of the overlap between topic 1
+    #       What's the proprotion of the top topics that matched?
+    #
+    kappa = cohen_kappa(iTopic1, jTopic1)
+    print(f'Binary Cohen Kappa on \'topic1\' is {kappa:.4f}')
+
+    #
+    #   Compute the Binary Kappa of the overlap between topic 2
+    #       What's the proprotion of the secondary topics that matched?
+    #
+    kappa = cohen_kappa(iTopic2, jTopic2)
+    print(f'Binary Cohen Kappa on \'topic2\' is {kappa:.4f}')
+
+    
+    #
+    #   Compute the Setwise Kappa of the overlap between topics
+    #       They might still have the same topics selected?
+    #       What's the proprotion of both topics that matched (any order)?
+    #
+    iTopics = [iTopic1, iTopic2]
+    jTopics = [jTopic1, jTopic2]
+    kappa = cohen_set_kappa(iTopics, jTopics)
+    print(f'Setwise Cohen Kappa on \'topic1, topic2\' is {kappa:.4f}')
+
+
+    #
+    #   Compute the Setwise Kappa of the overlap between topics
+    #       They might still have the same topics selected?
+    #       What's the proprotion of both topics that matched (any order)?
+    #
+    iTopics = [iTopic1, iTopic2]
+    jTopics = [jTopic1, jTopic2]
+    kappa = single_cohen_set_kappa(iTopics, jTopics)
+    print(f'Any Agreement Setwise Cohen Kappa on \'topic1, topic2\' is {kappa:.4f}')
+    print(f'\tProportion of songs with {1-kappa:.4f} completely different annotated topics')
