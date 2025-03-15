@@ -8,8 +8,8 @@ To run, ensure you are in the home directory. Then run the following command:
 py model_training/kappa_analysis.py
 ```
 
-Do to an error in our dataset splitting, only datasets_1 (`dataset-christian.db`) and dataset_2 (`dataset-stanley.db`)
-contained duplicated entires. Every requirement layed out in the project description was met, (15% of the total instances are duplicated, just not split up correctly).
+Due to an error in our dataset splitting, only datasets_1 (`dataset-christian.db`) and dataset_2 (`dataset-stanley.db`)
+contained duplicated entries. Every requirement laid out in the project description was met, (15% of the total instances are duplicated, just not split up correctly).
 The error was not caught until after the data was split and recombined.
 
 Thus, we decided to use Cohens' Kappa (Pairwise Agreement between two Annotators). This is a measure of how much two annotators agree on a set of items -- which in this case is
@@ -39,7 +39,7 @@ Any Intersection Agreement  {topic1, topic2}
 
 The first question we asked ourselves was which datapoint should be used to train the model: decade or topic. We decided to first begin with topic, since the `Setwise Cohen Kappa`s were relatively high and we found the data more interesting.Note that we will be considering the ground truth label as an _unordered set of 2 topics_. This is because in our annotation guidelines, we did not ask the annotators to order the topics. In other words, the `Setwise Cohen Kappa` best describes the agreement between the two annotators.
 
-With this aggrement being 57%, we decided to use an "Adjudication" approach for the remaining 43% of the data. This means that we will manually select the labels we believe to be the most correct between the two annotators.
+With this agreement being 57%, we decided to use an "Adjudication" approach for the remaining 43% of the data. This means that we will manually select the labels we believe to be the most correct between the two annotators.
 
 We used the `ground_truth_labels.py` script to reivew and remove duplicated between the two annotators, then finally, output our ground truth dataset to `model_training/ground_truth_dataset.db`.
 
