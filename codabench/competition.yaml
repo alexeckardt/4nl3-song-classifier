@@ -45,7 +45,7 @@ solutions:
     tasks:
     - 0
     - 1
-    path: solution/
+    path: baseline/
 
 # There are 2 phases: development phase and final phase
 # Each one is linked to a task
