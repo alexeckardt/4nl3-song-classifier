@@ -1,8 +1,6 @@
-# This file contains the main settings of the benchmark
-# Learn more here: https://github.com/codalab/codabench/wiki/Yaml-Structure
-title: Mini-AutoML
+title: Song-Classifier
 version: 2 # this means that it is a Codabench bundle
-description: AutoML Benchmark template with submission to multiple datasets
+description: Classifies songs based on the topics of their lyrics.
 image: logo.png
 registration_auto_approve: True  # do not require approval from organizers to join
 docker_image: codalab/codalab-legacy:py39 # the Docker image in which submissions are run
@@ -98,33 +96,14 @@ leaderboards:
   key: Results
   submission_rule: "Force_Last"
   columns:
-      - title: Average Accuracy
-        key: avg_accuracy
+      - title: Average F-1
+        key: avg_f1
         index: 0
         sorting: desc
         computation: avg
         computation_indexes:
           - 1
-          - 2
-          - 3
-          - 4
-      - title: Dataset 1
+      - title: Testing Data
         key: dataset1
         index: 1
         sorting: desc
-      - title: Dataset 2
-        key: dataset2
-        index: 2
-        sorting: desc
-      - title: Dataset 3
-        key: dataset3
-        index: 3
-        sorting: desc
-      - title: Dataset 4
-        key: dataset4
-        index: 4
-        sorting: desc
-      - title: Duration
-        key: duration
-        index: 5
-        sorting: asc
