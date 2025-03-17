@@ -42,36 +42,33 @@ def cohen_kappa(iResults, jResults):
     assert iResults.keys() == jResults.keys(), 'Keys must be the same'
 
     # Count agreement categories
-    agree_11 = 0  # Both say 1 (Positive agreement)
-    agree_00 = 0  # Both say 0 (Negative agreement)
-    disagree_10 = 0  # First says 1, second says 0
-    disagree_01 = 0  # First says 0, second says 1
+    values = set(str(x) for x in set(iResults.values()).union(set(jResults.values())))
     total = 0
+    observedAgrees = 0
+    answerCounts = {x: 0 for x in values}
+    annotatiorCounts = [{x: 0 for x in values}, {x: 0 for x in values}]
 
     for key in iResults:
-        iAnswer = iResults[key]
-        jAnswer = jResults[key]
+        iAnswer = str(iResults[key])
+        jAnswer = str(jResults[key])
         total += 1
 
-        if iAnswer == 1 and jAnswer == 1:
-            agree_11 += 1
-        elif iAnswer == 0 and jAnswer == 0:
-            agree_00 += 1
-        elif iAnswer == 1 and jAnswer == 0:
-            disagree_10 += 1
-        elif iAnswer == 0 and jAnswer == 1:
-            disagree_01 += 1
+        answerCounts[iAnswer] += 1
+        answerCounts[jAnswer] += 1
+        annotatiorCounts[0][iAnswer] += 1
+        annotatiorCounts[1][jAnswer] += 1
+
+
+        if iAnswer == jAnswer:
+            observedAgrees += 1  # Exact match
+
 
     # Observed agreement (P_o)
-    P_o = (agree_11 + agree_00) / total
+    P_o = observedAgrees / total
 
     # Expected agreement (P_e)
-    p_i1 = (agree_11 + disagree_10) / total  # Probability that rater 1 says 1
-    p_i0 = 1 - p_i1  # Probability that rater 1 says 0
-    p_j1 = (agree_11 + disagree_01) / total  # Probability that rater 2 says 1
-    p_j0 = 1 - p_j1  # Probability that rater 2 says 0
-
-    P_e = (p_i1 * p_j1) + (p_i0 * p_j0)
+    P_e = ([(annotatiorCounts[0][label] / total) * (annotatiorCounts[1][label] / total) for label in values])
+    P_e = sum(P_e)
 
     # Cohen's Kappa
     if P_e == 1:  # Avoid division by zero in case of perfect agreement
