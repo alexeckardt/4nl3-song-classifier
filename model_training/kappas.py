@@ -32,7 +32,7 @@ def binary_proportion(iResults, jResults):
 
 def cohen_kappa(iResults, jResults):
     '''
-    Finds the binary agreement between two result objects.
+    Finds the agreement between two result objects.
 
     Finds the agreement between the two objects. Gets the proportion of 
     matching values for the same key.
