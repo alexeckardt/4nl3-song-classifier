@@ -1,7 +1,7 @@
 #Run the analasys
 import pandas as pd
 from dataset_loading import load_dataset
-from kappas import cohen_kappa, ordinal_kappa, cohen_set_kappa, single_cohen_set_kappa
+from kappas import binary_proportion, cohen_kappa, ordinal_kappa, cohen_set_kappa, single_cohen_set_kappa
 
 #
 #   See ./model_training/README.md
@@ -35,6 +35,9 @@ def construct_agreement_dict(unique_df, annotator, column):
 
     #Constructs O(1) lookup
     return out
+
+def buffer():
+    print('=========='*2)
 
 
 if __name__ == '__main__':
@@ -73,31 +76,40 @@ if __name__ == '__main__':
     #  Compute the Binary Kappa of the overlap
     #   What's the proprotion of the annotation that matched?
     #
+    proportion = binary_proportion(iDecades, jDecades)
     kappa = cohen_kappa(iDecades, jDecades)
+    print(f'Proportion on \'decade\' is {proportion:.4f}')
     print(f'Cohen Kappa on \'decade\' is {kappa:.4f}')
+
 
     #
     # Compute the Ordianl Kappa of the overlap
     #   how different were the year annotations?
     #
-    sep = 1/5 # 'Punishment" for each decade of difference between the two annotators
-    kappa = ordinal_kappa(iDecades, jDecades, sep)
+    kappa = ordinal_kappa(iDecades, jDecades)
     print(f'Ordinal Kappa on \'decade\' is {kappa:.4f}')
+    buffer()
 
     #
     #   Compute the Binary Kappa of the overlap between topic 1
     #       What's the proprotion of the top topics that matched?
     #
     kappa = cohen_kappa(iTopic1, jTopic1)
+    proportion = binary_proportion(iTopic1, jTopic1)
     print(f'Cohen Kappa on \'topic1\' is {kappa:.4f}')
-
+    print(f'Proportion on \'topic1\' is {proportion:.4f}')
+    
+    buffer()
     #
     #   Compute the Binary Kappa of the overlap between topic 2
     #       What's the proprotion of the secondary topics that matched?
     #
     kappa = cohen_kappa(iTopic2, jTopic2)
+    proportion = binary_proportion(iTopic2, jTopic2)
     print(f'Cohen Kappa on \'topic2\' is {kappa:.4f}')
+    print(f'Proportion on \'topic2\' is {proportion:.4f}')
 
+    buffer()
     
     #
     #   Compute the Setwise Kappa of the overlap between topics
@@ -114,8 +126,11 @@ if __name__ == '__main__':
     iTopics = combine_into_set(iTopic1, iTopic2)
     jTopics = combine_into_set(jTopic1, jTopic2)
     kappa = cohen_set_kappa(iTopics, jTopics)
+    proportion = binary_proportion(iTopics, jTopics)
     print(f'Setwise Cohen Kappa on \'topic1, topic2\' is {kappa:.4f}')
-
+    print(f'Proportion of Matching \'topic1, topic2\' is {proportion:.4f}')
+    buffer()
+    
 
     #
     #   Compute the Setwise Kappa of the overlap between topics
@@ -125,5 +140,6 @@ if __name__ == '__main__':
     iTopics = [iTopic1, iTopic2]
     jTopics = [jTopic1, jTopic2]
     kappa = single_cohen_set_kappa(iTopics, jTopics)
-    print(f'Any Agreement Setwise Cohen Kappa on \'topic1, topic2\' is {kappa:.4f}')
+    print(f'Extra: Any Agreement Setwise Proportion on \'topic1, topic2\' is {kappa:.4f}')
     print(f'\tProportion of songs with {1-kappa:.4f} completely different annotated topics')
+    print('\n\n')

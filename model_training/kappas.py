@@ -95,7 +95,7 @@ def ordinal_kappa(iResults, jResults, order={}):
         - 1990 vs 1970 = 1 - 2*d (partial agreement)
         - 1990 vs 1960 = 1 - 3*d (no agreement)
     
-        etc, where d is a spacing parameter (default 1/3).
+        etc, where d is a spacing parameter between 0 and 1.
         Match can only be between 1 and 0, however.
 
     iResults and jResults must have the same keys, be iterable, and have the same length.
