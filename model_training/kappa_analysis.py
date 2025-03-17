@@ -74,7 +74,7 @@ if __name__ == '__main__':
     #   What's the proprotion of the annotation that matched?
     #
     kappa = cohen_kappa(iDecades, jDecades)
-    print(f'Binary Cohen Kappa on \'decade\' is {kappa:.4f}')
+    print(f'Cohen Kappa on \'decade\' is {kappa:.4f}')
 
     #
     # Compute the Ordianl Kappa of the overlap
@@ -89,14 +89,14 @@ if __name__ == '__main__':
     #       What's the proprotion of the top topics that matched?
     #
     kappa = cohen_kappa(iTopic1, jTopic1)
-    print(f'Binary Cohen Kappa on \'topic1\' is {kappa:.4f}')
+    print(f'Cohen Kappa on \'topic1\' is {kappa:.4f}')
 
     #
     #   Compute the Binary Kappa of the overlap between topic 2
     #       What's the proprotion of the secondary topics that matched?
     #
     kappa = cohen_kappa(iTopic2, jTopic2)
-    print(f'Binary Cohen Kappa on \'topic2\' is {kappa:.4f}')
+    print(f'Cohen Kappa on \'topic2\' is {kappa:.4f}')
 
     
     #
