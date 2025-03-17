@@ -82,7 +82,7 @@ if __name__ == '__main__':
     #
     sep = 1/5 # 'Punishment" for each decade of difference between the two annotators
     kappa = ordinal_kappa(iDecades, jDecades, sep)
-    print(f'Ordinal Kappa (seperation={sep:.3f}) on \'decade\' is {kappa:.4f}')
+    print(f'Ordinal Kappa on \'decade\' is {kappa:.4f}')
 
     #
     #   Compute the Binary Kappa of the overlap between topic 1

@@ -81,7 +81,7 @@ minDecade = 1940 #the range for this does not matter -- it's ordinal distance.
 maxDecade = 2030
 year_ordinal = {x: i for i, x in enumerate([x for x in range(minDecade, maxDecade+1, 10)])}
 
-def ordinal_kappa(iResults, jResults, spacing=1/3, order={}):
+def ordinal_kappa(iResults, jResults, order={}):
     '''
     Finds the ordinal distance agreement between two objects.
 
