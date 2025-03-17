@@ -1,21 +1,22 @@
 # Data
 
-This benchmark features 8 different hidden tabular datasets:
+This benchmark features the following datasets
 
 |Phase|Nickname|Task|
 |---|---|---|
-| Feedback | dataset1 | Classification |
-| Feedback | dataset2 | Classification |
-| Feedback | dataset3 | Classification |
-| Feedback | dataset4 | Classification |
-| Final | dataset1 | Classification |
-| Final | dataset2 | Classification |
-| Final | dataset3 | Classification |
-| Final | dataset4 | Classification |
+| Feedback | training | Classification |
+| Feedback | validation | Classification |
+| Feedback | testing | Classification |
+| Final | training | Classification |
+| Final | validation | Classification |
+| Final | testing | Classification |
+
+Only the training data will be made public.
 
 Each dataset is sent independently to the candidate model as:
-- `X`: a `np.ndarray` of shape `(num_samples, num_features)`,
-- `y`: a `np.ndarray` of shape `(num_samples)`, representing the labels in dense format.
-
-The sources of the data are hidden for the purpose of showing what an AutoML Benchmark looks like.
-You can learn more here: [Mini-AutoML Benchmark Bundle](https://github.com/codalab/competition-examples/tree/master/codabench/mini-automl).
+- `X`: a `np.array` of shape `(num_samples, num_features)`,
+   This will be a dataframe of lyrics 
+- `y`: a `np.array` of shape `(num_samples)`, representing the labels
+   This will be a dataframe of vectors. Each vector will contain 11 columns each representing a topic.
+   The j-th column will be 1 if a song falls under the j-th topic and so forth. There will be exactly 2
+   entries set to 1 and the others will be 0. This is because 2 topics will be assigned to each song.

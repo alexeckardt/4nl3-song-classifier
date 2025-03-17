@@ -1,12 +1,7 @@
-# Mini-AutoML Benchmark
+# Song Classifier Benchmark
 
-Mini-AutoML is a benchmark template for Codabench, featuring code submission to multiple datasets.
-This benchmark involves two phases:
-- Feedback phase, with 4 datasets,
-- Final phase, with 4 different datasets.
+This benchmark evaluates the performance of models that aim to classify topics that best resonate with a song given 
+its lyrics. 
 
 All tasks are **classification tasks**.
 
-You can download an example submission here: [sample_code_submission.zip](https://github.com/codalab/competition-examples/blob/master/codabench/mini-automl/sample_code_submission.zip).
-
-Made by [Adrien Pavao](https://adrienpavao.com/).
