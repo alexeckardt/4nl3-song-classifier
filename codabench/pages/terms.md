@@ -7,6 +7,7 @@ The benchmark provides training, validation, and testing datasets, each split in
 - Inputs `X` (files ending with `_data.csv`) have shape `(num_samples, 1)`. Each row is the lyrics of a given song. 
 - Outputs `y` (files ending with `_label.csv`) have shape `(num_samples, num_labels)`. Each row is a vector of size `num_labels` (11) each representing a topic. The j-th column will be 1 if a song falls under the j-th topic and so forth. There will be exactly 2 entries set to 1 and the others will be 0. This is because 2 topics will be assigned to each song.
 - The 11 output columns correspond to the following topics: 
+
 | column | topic |
 |---|---|
 | 0 | Break-up (heartbreak) |
