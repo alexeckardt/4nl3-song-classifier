@@ -25,7 +25,6 @@ Due to the nature of our data annotations, we actually have 4 labels:
 Due to the nature of our topics, we decided to add some additional variations on the Agreement metrics, as seen in `kappas.py`.
 
 The output of the script is as follows:
-
 ```
 Binary Agreement  decade
 Ordinal Agreement  decade

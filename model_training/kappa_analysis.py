@@ -104,8 +104,15 @@ if __name__ == '__main__':
     #       They might still have the same topics selected?
     #       What's the proprotion of both topics that matched (any order)?
     #
-    iTopics = [iTopic1, iTopic2]
-    jTopics = [jTopic1, jTopic2]
+    def combine_into_set(topic1, topic2):
+        
+        topics = {}
+        for topic in topic1:
+            topics[topic] = {topic1[topic], topic2[topic]}
+        return topics
+    
+    iTopics = combine_into_set(iTopic1, iTopic2)
+    jTopics = combine_into_set(jTopic1, jTopic2)
     kappa = cohen_set_kappa(iTopics, jTopics)
     print(f'Setwise Cohen Kappa on \'topic1, topic2\' is {kappa:.4f}')
 
