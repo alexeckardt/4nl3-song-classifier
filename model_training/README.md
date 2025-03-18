@@ -33,6 +33,11 @@ Binary Agreement  topic2
 Setwise Agreement  {topic1, topic2}
 Any Intersection Agreement  {topic1, topic2}
 ```
+Additionally, we added the general proportion that the annotators had the exact same label for each of the following:
+1. decade
+2. topic1
+3. topic2
+4. `{`topic1, topic2`}`
 
 ## Ground Truth Labels
 

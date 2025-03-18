@@ -83,9 +83,7 @@ year_ordinal = {x: i for i, x in enumerate([x for x in range(minDecade, maxDecad
 
 def ordinal_kappa(iResults, jResults, order={}):
     '''
-    Finds the ordinal distance agreement between two objects.
-
-    Finds the agreement between the two objects, using an integer distance.
+    Finds the agreement between two objects, taking into account the ordinal distance between the two objects.
      
     Gets the proportion of matching values for the same key. However, instead of it being a binary match,
     we instead have it be based on the distance between the two values.
