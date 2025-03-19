@@ -9,8 +9,8 @@ enable_detailed_results: True
 # Documentation web pages
 terms: pages/terms.md
 pages:
-  - title: Term
-    file: pages/terms.md
+  - title: Format
+    file: pages/format.md
 
 # Definition of the tasks
 tasks:
