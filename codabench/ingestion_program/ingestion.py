@@ -58,7 +58,7 @@ def main():
         print('Making predictions')
         y_pred = m.predict(X_test)
         # Save predictions
-        np.savetxt(os.path.join(output_dir, f'{data}.predict'), y_pred)
+        np.savetxt(os.path.join(output_dir, f'{data}.predict'), y_pred, fmt="%i")
         duration = time.time() - start
         print(f'Time elapsed so far: {duration}')
     # End

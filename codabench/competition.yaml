@@ -1,4 +1,4 @@
-title: Song-Classifier
+title: Song-Classifier 2
 version: 2 # this means that it is a Codabench bundle
 description: Classifies songs based on the topics of their lyrics.
 image: logo.png
@@ -9,12 +9,8 @@ enable_detailed_results: True
 # Documentation web pages
 terms: pages/terms.md
 pages:
-  - title: Overview
-    file: pages/overview.md
-  - title: Data
-    file: pages/data.md
-  - title: Evaluation
-    file: pages/evaluation.md
+  - title: Term
+    file: pages/terms.md
 
 # Definition of the tasks
 tasks:
@@ -32,8 +28,8 @@ tasks:
     cloned and used to compute the final score. The results on the test set will be
     revealed when the organizers make them available.'
   is_public: false
-  input_data: final_phase/input_data
-  reference_data: final_phase/reference_data
+  input_data: feedback_phase/input_data
+  reference_data: feedback_phase/reference_data
   scoring_program: scoring_program
   ingestion_program: ingestion_program
 solutions: []
@@ -96,14 +92,11 @@ leaderboards:
   key: Results
   submission_rule: "Force_Last"
   columns:
-      - title: Average F-1
-        key: avg_f1
+      - title: F-1
+        key: testing
         index: 0
         sorting: desc
-        computation: avg
-        computation_indexes:
-          - 1
-      - title: Testing Data
-        key: dataset1
+      - title: Duration
+        key: duration
         index: 1
         sorting: desc
