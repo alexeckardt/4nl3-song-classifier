@@ -34,7 +34,7 @@ def get_dataset_names():
 def get_data(dataset):
     """ Get ground truth (y_test) and predictio0ns (y_pred) from the dataset name.
     """
-    y_test = pd.read_csv(os.path.join(reference_dir, dataset + '_label.csv'), header=None)
+    y_test = pd.read_csv(os.path.join(reference_dir, dataset + '_label.csv'))
     y_test = np.array(y_test)
     y_pred = np.genfromtxt(os.path.join(prediction_dir, dataset + '.predict'), dtype=int)
     return y_test, y_pred
