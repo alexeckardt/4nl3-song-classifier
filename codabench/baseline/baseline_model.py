@@ -1,3 +1,5 @@
+import numpy as np
+
 class Model:
     def __init__(self):
         pass
@@ -6,4 +8,4 @@ class Model:
         pass
 
     def predict(self, X):
-        return [0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0]
+        return np.full(len(X), 3)

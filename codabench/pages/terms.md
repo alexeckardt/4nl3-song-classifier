@@ -1,12 +1,12 @@
 # Overview
 This benchmark is for the 4NL3 course in 2025 organized by group 17: Alex Eckardt, Neel Joshi, Sarah Simionescu, and Eric Zhou.  
-We evaluate the performance of models that aim to classify topics that best resonate with a song given its lyrics. 
+We evaluate the performance of models that aim to classify the topic that best resonate with a song given its lyrics. 
 
 # Data
 The benchmark provides training, validation, and testing datasets, each split into separate `.csv` files.
-- Inputs `X` (files ending with `_data.csv`) have shape `(num_samples, 1)`. Each row is the lyrics of a given song. 
-- Outputs `y` (files ending with `_label.csv`) have shape `(num_samples, num_labels)`. Each row is a vector of size `num_labels` (11) each representing a topic. The j-th column will be 1 if a song falls under the j-th topic and so forth. There will be exactly 2 entries set to 1 and the others will be 0. This is because 2 topics will be assigned to each song.
-- The 11 output columns correspond to the following topics: 
+- Inputs `X` (files ending with `_data.csv`) have shape `(num_samples)`. Each row is the lyrics of a given song. 
+- Outputs `y` (files ending with `_label.csv`) have shape `(num_samples)`. Each row is a integer label `0-9` representing a topic. 
+- The output labels correspond to the following topics: 
 
 | column | topic |
 |---|---|
@@ -19,8 +19,7 @@ The benchmark provides training, validation, and testing datasets, each split in
 | 6 | Love (devotion) |
 | 7 | Money (power/flexing) |
 | 8 | Motivation (independence/confidence) |
-| 9 | Other |
-| 10| Struggle (mental health/societal issue) |
+| 9 | Struggle (mental health/societal issue) |
 
 - The test labels are not made public. 
 

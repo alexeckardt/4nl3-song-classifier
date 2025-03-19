@@ -11,16 +11,35 @@ class Model:
     def __init__(self):
         """ <ADD DOCUMENTATION HERE>
         """
-        self.classifier = LTSM()
+        pass
 
     def fit(self, X, y):
         """ Train the model.
 
         Args:
-            X: Training data matrix of shape (num-samples, num-features), type np.ndarray.
+            X: Training data matrix of shape (num-samples), type np.ndarray.
             y: Training label vector of shape (num-samples), type np.ndarray.
         """
-        self.classifier.fit(X, y)
+        
+        self.vocab = build_vocab_from_iterator(map(self.tokenize, X), specials=["<PAD>", "<UNK>"])
+        self.vocab.set_default_index(self.vocab['<UNK>'])
+        sequences = [torch.tensor([self.vocab[token] for token in self.tokenize(text)]) for text in X]
+        padded_sequences = pad_sequence(sequences, batch_first=True, padding_value=self.vocab["<PAD>"])
+        dataset = TensorDataset(padded_sequences, y)
+        dataloader = DataLoader(dataset, batch_size=2, shuffle=True)
+
+        self.classifier = LSTM(len(self.vocab))
+        criterion = nn.CrossEntropyLoss()
+        optimizer = optim.Adam(self.classifier.parameter(), lr=0.01)
+
+        num_epochs = 10
+        for epoch in range(num_epochs):
+            for batch_texts, batch_labels in dataloader:
+                optimizer.zero_grad()
+                outputs = self.classifier(batch_texts)
+                loss = criterion(outputs, batch_labels)
+                loss.backward()
+                optimizer.step()
 
     def predict(self, X):
         """ Predict labels.
@@ -28,10 +47,18 @@ class Model:
         Args:
           X: Data matrix of shape (num-samples, num-features) to pass to the model for inference, type np.ndarray.
         """
-        y = self.classifier.predict(X)
-        return y
+        self.classifier.eval()
+        with torch.no_grad():
+            seq = torch.tensor([self.vocab[token] for token in self.tokenize(X)]).unsqueeze(0)
+            padded_seq = pad_sequence([seq], batch_first=True, padding_value=self.vocab["<PAD>"])
+            output = self.classifier(padded_seq)
+            predicted_class = torch.argmax(output, dim=1).item()
+        return predicted_class
+    
+    def tokenize(text):
+        return text.lower().split()
 
-class LTSM(nn.Module):
+class LSTM(nn.Module):
     # code from tutorial:
     def __init__(self, vocab_size, embed_dim=16, hidden_dim=32, num_tags=11, pad_idx=0):
         super().__init__()
